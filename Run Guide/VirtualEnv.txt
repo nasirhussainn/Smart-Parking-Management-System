@@ -1,0 +1,3 @@
+to activate the virtual env - spmsenv
+cmd - spmsenv\Scripts\activate
+this have all the libraries in requirements.txt
