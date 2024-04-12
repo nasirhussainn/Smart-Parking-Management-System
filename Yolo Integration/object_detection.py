@@ -3,7 +3,7 @@ import numpy as np
 
 
 class ObjectDetection:
-    def __init__(self, weights_path="/Users/apple/Documents/GCF-744/CodeParking/yolov4-tiny.weights", cfg_path="/Users/apple/Documents/GCF-744/CodeParking/yolov4-tiny.cfg"):
+    def __init__(self, weights_path="E:\Smart Parking Management System\Yolo Integration\yolov4-tiny.weights", cfg_path="E:\Smart Parking Management System\Yolo Integration\yolov4-tiny.cfg"):
         print("Loading Object Detection with Yolov4-Tiny")
         self.nmsThreshold = 0.4
         self.confThreshold = 0.5
@@ -23,7 +23,7 @@ class ObjectDetection:
 
         self.model.setInputParams(size=(self.image_size, self.image_size), scale=1/255)
 
-    def load_class_names(self, classes_path="/Users/apple/Documents/GCF-744/CodeParking/classes.txt"):
+    def load_class_names(self, classes_path="E:\Smart Parking Management System\Yolo Integration\classes.txt"):
 
         with open(classes_path, "r") as file_object:
             for class_name in file_object.readlines():
