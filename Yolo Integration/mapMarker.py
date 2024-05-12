@@ -11,7 +11,7 @@
 import cv2
 import pickle
 
-mapFileName = 'guideLines'
+mapFileName = 'mapSpotFile'
 video_filetouse = 'video.mp4'
 cap = cv2.VideoCapture(video_filetouse)
 
