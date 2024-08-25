@@ -1,0 +1,105 @@
+{% extends 'masterpage.html' %}
+{% block title %} {% endblock title %}
+{% block body %}
+{% load static %}
+
+<main class="content">
+    <div class="container-fluid p-0">
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">Parking Space</h1>
+        </div>
+        {% if editparkingspace %}
+        <form action="" method="post" name="reg" role="form" class="php-email-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Start Time</p>
+                            <input type="datetime-local" class="form-control" name="ST" placeholder="Start Time" value="{{ editparkingspace.starthours|date:'Y-m-d\\TH:i' }}" required>
+                            <br>
+                            <p>End Time</p>
+                            <input type="datetime-local" class="form-control" name="ET" placeholder="End Time" value="{{ editparkingspace.endhours|date:'Y-m-d\\TH:i' }}" required>
+                            <br>
+                            <p>Search Name</p>
+                            <input id="map-search" class="form-control" name="name" type="text" placeholder="Search Box" value="{{ editparkingspace.Name }}" required>
+                            <br>
+                            <p>Latitude</p>
+                            <input type="text" name="lat" class="latitude form-control" value="{{ editparkingspace.latitude }}" required>
+                            <br>
+                            <p>Longitude</p>
+                            <input type="text" name="long" class="longitude form-control" value="{{ editparkingspace.longitude }}" required>
+                            <br>
+                            <p>City</p>
+                            <input type="text" class="reg-input-city form-control" placeholder="City" value="{{ editparkingspace.city }}" required>
+                            <br>
+                            <div class="card-body px-4">
+                                <div id="map-canvas" style="height:350px;"></div>
+                            </div>
+                            <p>Price</p>
+                            <input type="text" class="form-control" name="price" placeholder="price" value="{{ editparkingspace.Price }}" required>
+                            <br>
+                            <p>Date and Time</p>
+                            <input type="datetime-local" class="form-control" name="time" placeholder="Date and Time" value="{{ editparkingspace.Datetime|date:'Y-m-d\\TH:i' }}" required>
+                            <br>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update data</button>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <form action="" method="post" name="reg" role="form" class="php-email-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Start Time</p>
+                            <input type="datetime-local" class="form-control" name="ST" placeholder="Start Time" required>
+                            <br>
+                            <p>End Time</p>
+                            <input type="datetime-local" class="form-control" name="ET" placeholder="End Time" required>
+                            <br>
+                            <p>Search Name</p>
+                            <input id="map-search" class="form-control" name="name" type="text" placeholder="Search Box" required>
+                            <br>
+                            <p>Latitude</p>
+                            <input type="text" name="lat" class="latitude form-control" required>
+                            <br>
+                            <p>Longitude</p>
+                            <input type="text" name="long" class="longitude form-control" required>
+                            <br>
+                            <p>City</p>
+                            <input type="text" class="reg-input-city form-control" placeholder="City" required>
+                            <br>
+                            <div class="card-body px-4">
+                                <div id="map-canvas" style="height:350px;"></div>
+                            </div>
+                            <p>Price</p>
+                            <input type="text" class="form-control" name="price" placeholder="price" required>
+                            <br>
+                            <p>Date and Time</p>
+                            <input type="datetime-local" class="form-control" name="time" placeholder="Date and Time" required>
+                            <br>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == "success" %}
+            <strong>Well done!</strong> {{ message }}
+            {% else %}
+            <strong>Error!</strong> {{ message }}
+            {% endif %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+
+{% endblock body %}

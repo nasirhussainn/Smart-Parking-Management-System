@@ -1,0 +1,54 @@
+{% extends 'masterpage.html' %}
+{% block title %} {% endblock title %}
+{% block body %}
+{% load static %}
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="mb-3">
+						<h1 class="h3 d-inline align-middle">Admin Registration</h1>
+					</div>
+					<form action="" method="post" name="reg" role="form" class="php-email-form">
+						{% csrf_token %}
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<div class="card">
+								
+								<div class="card-body">
+									<p>Name</p>
+									<input type="text" class="form-control"  name="name" placeholder="Name" required>
+									<br>
+									<p>Email</p>
+									<input type="email" class="form-control"  name="email" placeholder="Email" required>
+									<br>
+									<p>Password</p>
+									<input type="password" class="form-control"  name="password1" placeholder="Password" required>
+									<br>
+									<p>Confirm Password</p>
+									<input type="password" class="form-control"  name="password2" placeholder="Confirm Password" required>
+									<br>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+<br>
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+
+  {% if message.tags == "success" %}
+  <strong>Well done!</strong> {{ message}}
+  {% else %}
+  <strong>Error!</strong> {{ message}}
+  {% endif %}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %} 
+							
+					</div>
+
+				</div>
+			</main>
+
+			
+			{% endblock body %}
