@@ -1,0 +1,118 @@
+
+.calendar {
+  width: 70%;
+  font-size: 13px;
+  margin-left: 25%;
+  margin-top: -40%;
+ 
+   
+  }
+  @media only screen and(max-width: 600px) {
+    .calendar {
+     
+      color:red;
+    }
+  }
+   
+
+.btn1 
+{ 
+  display: inline-block;
+  background-color: rgb(238, 110, 71);
+  color:rgb(238, 110, 71);
+  text-decoration: none;
+}
+.btn2
+{ 
+  display: inline-block;
+  color:rgb(111, 219, 90);
+  background-color: rgb(111, 219, 90);
+  text-decoration: none;
+
+}
+.btn3
+{   display: inline-block;
+  color:rgb(118, 160, 236);
+  background-color: rgb(118, 160, 236);
+  text-decoration: none;
+
+}
+
+.btn1:hover
+{
+  color:rgb(238, 110, 71);
+}
+.btn2:hover
+{
+  color:rgb(111, 219, 90);
+}
+.btn3:hover
+{
+  color:rgb(118, 160, 236);
+}
+
+  .calendar tr, .calendar td {
+    border: 1px solid black;
+  }
+
+  .calendar th {
+
+    text-align: center;
+    font-size: 18px;
+    background-color: #aed2d8;
+    color:white;
+  }
+
+  .calendar td {
+    width: 350px;
+    height: 150px;
+    padding: 20px 0px 0px 5px;
+    background-color: #eef4f5;
+  }
+
+  .month {
+    font-size: 25px;
+  }
+
+  .date {
+    font-size: 16px;
+  }
+
+  ul {
+    height: 100%;
+    padding: 0px 5px 0px 20px;
+  }
+
+ 
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .btn {
+    outline: none;
+    color: black;
+    background-color: transparent;
+    box-shadow: 0 0 0 0;
+  }
+
+  .clearfix {
+    margin: 15px;
+  }
+
+  .form {
+    margin: auto;
+  }
+
+  .form input, .form select, .form textarea {
+    border-radius: 5px;
+    border: 1px solid #17a2b8;
+    outline: none;
+    background: none;
+    padding: 5px;
+    width: 100%;
+  }

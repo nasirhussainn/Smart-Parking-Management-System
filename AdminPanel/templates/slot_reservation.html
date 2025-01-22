@@ -1,0 +1,158 @@
+{% extends 'masterpage.html' %}
+
+{% block title %}Slot Reservations{% endblock title %}
+
+{% block body %}
+<main class="content">
+    <div class="container-fluid p-0">
+        <h1 >Slot Reservation Management</h1>
+
+        <!-- Create New Reservation -->
+       
+            <form id="create-reservation-form" method="post">
+                {% csrf_token %}
+               
+                <button type="hidden" id="create-reservation-btn" class="btn btn-success" style="display: none;">Create Reservation</button>
+
+            </form>
+     
+
+        <!-- List of Reservations -->
+        <div id="reservation-list">
+            <h3>All Reservations</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Parking Space</th>
+                        <th>User</th>
+                        <th>Start Hours</th>
+                        <th>End Hours</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reservation-table-body">
+                    <!-- Rows will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Response Message -->
+        <div id="response-message" class="mt-4"></div>
+    </div>
+</main>
+
+<script>
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Fetch all reservations
+    async function fetchReservations() {
+        const response = await fetch('/api/slot-reservations/');
+        const data = await response.json();
+
+        if (response.ok) {
+            const tableBody = document.getElementById('reservation-table-body');
+            tableBody.innerHTML = ''; // Clear existing rows
+            data.forEach((reservation) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reservation.id}</td>
+                    <td>${reservation.ParkingID}</td>
+                    <td>${reservation.UserID}</td>
+                    <td>${new Date(reservation.starthours).toLocaleString()}</td>
+                    <td>${new Date(reservation.endhours).toLocaleString()}</td>
+                    <td>${reservation.amount}</td>
+                    <td>${reservation.status}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="updateReservation(${reservation.id})">Update</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteReservation(${reservation.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            document.getElementById('response-message').innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+        }
+    }
+
+    // Create a new reservation
+    document.getElementById('create-reservation-btn').addEventListener('click', async () => {
+        const data = {
+            ParkingID: document.getElementById('parking-id').value,
+            UserID: document.getElementById('user-id').value,
+            starthours: document.getElementById('start-hours').value,
+            endhours: document.getElementById('end-hours').value,
+            amount: document.getElementById('amount').value,
+            status: document.getElementById('status').value,
+        };
+
+        const response = await fetch('/api/slot-reservations/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            document.getElementById('response-message').innerHTML = `<p style="color: green;">Reservation created successfully!</p>`;
+            fetchReservations(); // Refresh the list
+        } else {
+            document.getElementById('response-message').innerHTML = `<p style="color: red;">Error: ${result.error || 'Could not create reservation'}</p>`;
+        }
+    });
+
+    // Update a reservation
+    async function updateReservation(id) {
+        const newStatus = prompt('Enter new status (Pending/Completed):');
+        if (!['Pending', 'Completed'].includes(newStatus)) {
+            alert('Invalid status');
+            return;
+        }
+
+        const response = await fetch(`/api/slot-reservationbyid/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            document.getElementById('response-message').innerHTML = `<p style="color: green;">Reservation updated successfully!</p>`;
+            fetchReservations(); // Refresh the list
+        } else {
+            document.getElementById('response-message').innerHTML = `<p style="color: red;">Error: ${result.error || 'Could not update reservation'}</p>`;
+        }
+    }
+
+    // Delete a reservation
+    async function deleteReservation(id) {
+        const confirmDelete = confirm('Are you sure you want to delete this reservation?');
+        if (!confirmDelete) return;
+
+        const response = await fetch(`/api/slot-reservationbyid/${id}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+        });
+
+        if (response.ok) {
+            document.getElementById('response-message').innerHTML = `<p style="color: green;">Reservation deleted successfully!</p>`;
+            fetchReservations(); // Refresh the list
+        } else {
+            document.getElementById('response-message').innerHTML = `<p style="color: red;">Error: Could not delete reservation.</p>`;
+        }
+    }
+
+    // Load reservations on page load
+    document.addEventListener('DOMContentLoaded', fetchReservations);
+</script>
+{% endblock body %}

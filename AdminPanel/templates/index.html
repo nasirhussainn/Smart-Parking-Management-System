@@ -1,0 +1,32 @@
+{% extends 'masterpage.html' %}
+{% block title %}Welcome{% endblock title %}
+{% block body %}
+{% load static %}
+<main class="content">
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Welcome to Smart Parking!</h1>
+        <p class="lead">Your one-stop solution for parking management.</p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Parking Spaces</h5>
+                        <p class="card-text">View and manage your parking spaces.</p>
+                        <a href="/parkingspace" class="btn btn-primary">Go to Parking Spaces</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Slot Reservations</h5>
+                        <p class="card-text">Make and manage your slot reservations.</p>
+                        <a href="/slot-reservations/" class="btn btn-primary">Go to Reservations</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock body %}

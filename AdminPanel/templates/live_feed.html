@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Parking Feed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+        #liveFeed {
+            width: 640px;
+            height: 480px;
+            border: 1px solid #ddd;
+        }
+        .vehicle-data {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ parking_space.name }} Live Feed</h1>
+        
+        <!-- Live Feed Stream -->
+        <div>
+            <img id="liveFeed" src="{% url 'live_feed' parking_space.id %}" alt="Live Parking Feed" />
+        </div>
+
+        <!-- Vehicle Count Information -->
+        <div class="vehicle-data">
+            <h2>Vehicle Detection Data</h2>
+            <p><strong>Total Vehicles:</strong> <span id="totalVehicles">0</span></p>
+            <p><strong>Two-Wheelers:</strong> <span id="twoWheelers">0</span></p>
+            <p><strong>Four-Wheelers:</strong> <span id="fourWheelers">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Simulate live vehicle count updates
+        setInterval(function() {
+            fetch('/api/vehicle_count/{{ parking_space.id }}/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalVehicles').textContent = data.total_vehicles;
+                    document.getElementById('twoWheelers').textContent = data.two_wheelers;
+                    document.getElementById('fourWheelers').textContent = data.four_wheelers;
+                });
+        }, 1000);  // Update every second
+    </script>
+</body>
+</html>

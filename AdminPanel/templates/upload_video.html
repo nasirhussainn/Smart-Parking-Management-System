@@ -1,0 +1,79 @@
+{% extends 'masterpage.html' %}
+
+{% block title %}Upload Parking Video{% endblock title %}
+
+{% block body %}
+<main class="content">
+    <div class="container-fluid p-0">
+
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">Upload Parking Video for Vehicle Detection</h1>
+        </div>
+        <form id="videoUploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Select Parking Space</p>
+                            <select name="parking_space" id="parkingSpace" class="form-control" required>
+                                {% for space in parking_spaces %}
+                                    <option value="{{ space.id }}">{{ space.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <br>
+                            <p>Upload Video</p>
+                            <input type="file" id="videoFile" name="video" class="form-control" accept="video/*" required>
+                            <br>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload and Process</button>
+                </div>
+            </div>
+        </form>
+
+        <br>
+        <div id="responseMessage"></div>
+    </div>
+</main>
+
+<script>
+    document.getElementById('videoUploadForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        const parkingSpace = document.getElementById('parkingSpace').value;
+        const videoFile = document.getElementById('videoFile').files[0];
+        
+        formData.append('parking_space', parkingSpace);
+        formData.append('video', videoFile);
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        try {
+            const response = await fetch('/upload-video/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                body: formData
+            });
+
+            const data = await response.json();
+            const messageDiv = document.getElementById('responseMessage');
+            if (response.ok) {
+                messageDiv.innerHTML = `
+                    <h3>Video Processed Successfully</h3>
+                    <p>Two-Wheelers: ${data.two_wheelers}</p>
+                    <p>Four-Wheelers: ${data.four_wheelers}</p>
+                    <p>Total Vehicles: ${data.total_vehicles}</p>
+                `;
+            } else {
+                messageDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('responseMessage').innerHTML = `<p style="color: red;">An error occurred while processing the video.</p>`;
+        }
+    });
+</script>
+{% endblock body %}

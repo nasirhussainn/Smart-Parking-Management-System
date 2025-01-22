@@ -1,0 +1,60 @@
+{% extends 'masterpage.html' %}
+{% block title %} {% endblock title %}
+{% block body %}
+{% load static %}
+
+<main class="content">
+    <div class="container-fluid p-0">
+
+        <h1 class="h3 mb-3"><strong> All Avilible ParkingSpaces</strong></h1>
+                  <div class="row">
+						<div class="col-12 col-lg-8 col-xxl-9 d-flex">
+							<div class="card flex-fill">
+								
+								<table class="table table-hover my-0">
+									<thead>
+										<tr>
+											<th>Parking Name</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+                                            <th>Latitude</th>
+											<th>Longitude</th>
+											<th>Total Vehicle</th>
+                                            <th>Price</th>
+											<th>Action</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+                                        {% for ps in parkingspaces %}
+										<tr>
+										
+											<td >{{ ps.name }}</td>
+											<td >{{ ps.starthours }}</td>
+											<td>{{ ps.endhours }}</td>
+											<td >{{ ps.latitude  }}</td>
+                                            <td>{{ ps.longitude  }}</td>
+											<td>{{ ps.total_vehicles   }}</td>
+                                            <td>{{ ps.price  }}</td>
+											<!-- <td class="table-action">
+												<a href="" class="feather feather-edit align-middle me-2"> </a>
+												<a href=""> <i class="mdi mdi-delete"></i></a>
+										  </td> -->
+										  <td>		
+											<i ></i> <a  href="{% url 'editparkingspace' ps.id  %}" >edit</a>
+											<br>
+											<i ></i> <a href="{% url 'deleteparkingspace' ps.id  %}" >Delete</a>
+										</td>
+										</tr>
+                                        {% endfor %}
+								
+									</tbody>
+								</table>
+							</div>
+						</div>
+					
+					</div>
+
+</div>
+</main>
+{% endblock body %}
